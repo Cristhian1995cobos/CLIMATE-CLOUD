@@ -20,7 +20,7 @@ def on_connect (client, userdata, flags, rc): #funcion llamada cuando nos conect
 def on_message(client, userdata, msg):#funcion para cuando llega un mensaje
     print (msg.payload.decode("utf-8"))
 
-# definimos el cliente, host, usuario y ontraseña introducidad al comienzo
+# definimos el cliente, host, usuario y contraseña introducidas al comienzo
 client = mqtt.Client (client_id = client_id, clean_session = clean_session)
 client.username_pw_set (user_name, password)
 client.on_connect = on_connect
@@ -33,11 +33,11 @@ a= float(0)
 while True: #Loop infinito que enviara los datos de las diferentes medidas de los sensores
 
     a=random.uniform(13,15)#creo un valor aleatorio de temperatura
-    ret = client.publish ("sensores/temperatura", a,qos=1)#envio el valor aleatorio
+    ret = client.publish ("sensor", a,qos=1,retain=True)#envio el valor aleatorio
     a=random.uniform(50,100)#creo un valor aleatorio de humedad
-    ret = client.publish ("sensores/humedad", a,qos=1)#creo un valor aleatorio de humedad
-    a=random.uniform(30,50)#creo un valor aleatorio de humedad
-    ret = client.publish ("sensores/calidadaire", a,qos=1)#creo un valor aleatorio de humedad
+    ret = client.publish ("sensores/humedad", a,qos=1,retain=True)#creo un valor aleatorio de humedad
+    a=random.uniform(30,50)#creo un valor aleatorio de calidad de aire
+    ret = client.publish ("sensores/calidadaire", a,qos=1,retain=True)#creo un valor aleatorio de clidad de aire
 
 
     client.loop ()
