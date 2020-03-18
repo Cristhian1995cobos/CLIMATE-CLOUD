@@ -34,11 +34,11 @@ a= float(0)
 while True: #Loop infinito que enviara los datos de las diferentes medidas de los sensores
 
     a=random.uniform(13,15)#creo un valor aleatorio de temperatura
-    ret = client.publish ("m4xvQf1qekvtaCH/temperatura", a,qos=1,retain=False)#envio el valor aleatorio
+    ret = client.publish ("m4xvQf1qekvtaCH/temperatura", a,qos=1,retain=True)#envio el valor aleatorio
     a=random.uniform(50,100)#creo un valor aleatorio de humedad
-    ret = client.publish ("m4xvQf1qekvtaCH/humedad", a,qos=1,retain=False)#creo un valor aleatorio de humedad
+    ret = client.publish ("m4xvQf1qekvtaCH/humedad", a,qos=1,retain=True)#creo un valor aleatorio de humedad
     a=random.uniform(30,50)#creo un valor aleatorio de calidad de aire
-    ret = client.publish ("m4xvQf1qekvtaCH/calidadaire", a,qos=1,retain=False)#creo un valor aleatorio de clidad de aire
+    ret = client.publish ("m4xvQf1qekvtaCH/calidadaire", a,qos=1,retain=True)#creo un valor aleatorio de clidad de aire
     print ("Envie")
 
     client.loop ()
