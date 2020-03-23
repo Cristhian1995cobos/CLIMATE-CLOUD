@@ -31,15 +31,15 @@ function Menu(props){
 
 const Drawer = createDrawerNavigator();
 
-export default function App() {
+export default function INICIAL() {
   return (
-    <NavigationContainer>
+    
       <Drawer.Navigator drawerContent={(props)=> <Menu {...props}/>}>
         <Drawer.Screen name="Temperatura" component={TemperaturaScreen} />
         <Drawer.Screen name="Calidad de aire" component={CalidadScreen} />
         <Drawer.Screen name="Humedad" component={HumedadScreen} />
       </Drawer.Navigator>
-    </NavigationContainer>
+    
   );
 }
 

@@ -24,7 +24,21 @@ export default {
     userImagen2: {
         width: 100,
         height: 70,
-        borderRadius: 0
+        borderRadius: 0,
+       
+    },
+    userImageniconos: {
+        width: 50,
+        height: 50,
+        borderRadius: 10,
+    },
+    userImagenLOGIN: {
+        top: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 310,
+        height: 200,
+        borderRadius: 0,
     },
     camaraContainer: {
         justifyContent: 'center',
@@ -48,6 +62,12 @@ export default {
         fontWeight:'bold',
         fontSize: 16
     },
+    userTitulo2: {
+        textAlign: 'center',
+        fontWeight:'bold',
+        fontSize: 25
+
+    },
 
     userSubTitulo: {
         textAlign: 'center',
@@ -60,7 +80,14 @@ export default {
         fontWeight:'bold',
         fontSize: 16,
         color: '#00b7ff',
-        paddingVertical: 5,
+        paddingVertical: 5
+    },
+    userSubTitulo3: {
+        textAlign: 'right',
+        fontWeight:'bold',
+        fontSize: 16,
+        color: '#00b7ff',
+        paddingVertical: 5
     },
     menuContainer: {
         flexDirection: 'row',

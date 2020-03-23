@@ -5,12 +5,13 @@ import {
   Text,
   View
 } from 'react-native'
-import INICIAL from './src/screen/INICIAL/INICIAL'
+
+import LOGIN from './src/screen/LOGIN/LOGIN'
 
 export default class App extends Component {
   render(){
     return (
-      <INICIAL />
+      <LOGIN />
     );
   }
 }

@@ -1,74 +1,334 @@
-import * as React from 'react';
-import { Button, View, Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+
+import React from 'react'
+import { LineChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
+import { Circle} from 'react-native-svg'
+
+
+import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast } from 'react-native';
+
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-
-
 import s from '../../components/style'
+////////////////////////////////////////////////
+import init from 'react_native_mqtt';
+import { AsyncStorage } from 'react-native';
 
-function GraficasScreen() {
-    return (
-        <View style={styles.container}>
-            <Text style={s.userTitulo}>Climate Cloud App</Text>
-            <Text style={s.userSubTitulo2}>Temperatura</Text>
-        </View>
-        
-    );
+
+//variables
+let tabla
+let tabla2
+let numbers = ['        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos'];
+let hora = ['', '', '', '', '', '', '', '', '', ''];
+let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let i
+i = 9
+init({
+    size: 10000,
+    storageBackend: AsyncStorage,
+    defaultExpires: 1000 * 3600 * 24,
+    enableCache: true,
+    reconnect: true,
+    sync: {
+    }
+});
+//clases> screens hijos
+class GraficasScreen extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            new_data: false
+        };
+
+    }
+
+    componentDidMount() {
+        // Toggle the state every second
+        setInterval(this.timerFunction, 1000);
+    }
+
+    timerFunction = () => {
+
+        this.setState(
+            { new_data: !this.state.new_data }
+        )
+    }
+
+
+
+    render() {
+
+        const axesSvg = { fontSize: 15, fill: '#00b7ff' };
+        const verticalContentInset = { top: 10, bottom: 10 }
+        const xAxisHeight = 30
+
+
+        const Decorator = ({ x, y, data }) => {
+            return data.map((value, index) => (
+                <Circle
+                    key={index}
+                    cx={x(index)}
+                    cy={y(value)}
+                    r={4}
+                    stroke={'#00b7ff'}
+                    fill={'#00b7ff'}
+                />
+            ))
+        }
+
+
+        return (
+
+
+            <TouchableOpacity>
+                <View style={styles.container}>
+                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                </View>
+
+                <View style={styles.container}>
+                    <Text style={s.userSubTitulo2}>Temperatura</Text>
+                </View>
+                <View style={s.userContainer}>
+                    <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
+
+                </View>
+
+                <View style={{ height: 440 ,  width: 390, padding: 20, flexDirection: 'row' }}>
+                    <YAxis
+                        data={data}
+                        style={{ marginBottom: xAxisHeight }}
+                        contentInset={verticalContentInset}
+                        svg={axesSvg}
+                        //  numberOfTicks={ 10 }
+                        formatLabel={value => `${value}ºC`}
+                    />
+                    <View style={{ flex: 1, marginLeft: 10 }}>
+                        <LineChart
+                            style={{ flex: 1 }}
+                            data={data}
+                            contentInset={verticalContentInset}
+                            svg={{ stroke: 'rgb(134, 65, 244)' }}
+                            
+                        >
+                            <Grid />
+                            <Decorator />
+                        </LineChart>
+
+
+                        <XAxis
+                            style={{ marginHorizontal: -10, height: xAxisHeight }}
+                            data={data}
+                            formatLabel={(value, index) => index+1}
+                            contentInset={{ left: 10, right: 10 }}
+                            svg={axesSvg}
+                        />
+                    </View>
+                </View>
+
+
+
+            </TouchableOpacity>
+
+        );
+
+
+    }
 }
 
-function DatosScreen() {
-    return (
-        <View style={styles.container}>
-            <Text style={s.userTitulo}>Climate Cloud App</Text>
-            <Text style={s.userSubTitulo2}>Temperatura</Text>
-            <FlatList
-                data={[
-                    { key: 'Data1' },
-                    { key: 'Data2' },
-                    { key: 'Data3' },
-                    { key: 'Data4' },
-                    { key: 'Data5' },
-                    { key: 'Data6' },
-                    { key: 'Data7' },
-                    { key: 'Data8' },
-                    { key: 'Data9' },
-                    { key: 'Data10' },
-                ]}
-                renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-            />
-        </View>
-    );
+
+
+class DatosScreen extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            new_data: false
+        };
+
+    }
+
+    componentDidMount() {
+        // Toggle the state every second
+        setInterval(this.timerFunction, 1000);
+    }
+
+    timerFunction = () => {
+
+        this.setState(
+            { new_data: !this.state.new_data }
+        )
+    }
+
+    render() {
+
+
+        return (
+
+
+            <TouchableOpacity>
+                <View style={styles.container}>
+                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                </View>
+
+                <View style={styles.container}>
+                    <Text style={s.userSubTitulo2}>Temperatura </Text>
+                </View>
+                <View style={s.userContainer}>
+                    <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
+
+                </View>
+                <Text style={s.userSubTitulo3}> Dato                               Hora             </Text>
+                <FlatList
+                    data={[
+                        { key: 'Dato 1:                     ' + numbers[0] + '°C                    ' + hora[0] },
+                        { key: 'Dato 2:                     ' + numbers[1] + '°C                    ' + hora[1] },
+                        { key: 'Dato 3:                     ' + numbers[2] + '°C                    ' + hora[2] },
+                        { key: 'Dato 4:                     ' + numbers[3] + '°C                    ' + hora[3] },
+                        { key: 'Dato 5:                     ' + numbers[4] + '°C                    ' + hora[4] },
+                        { key: 'Dato 6:                     ' + numbers[5] + '°C                    ' + hora[5] },
+                        { key: 'Dato 7:                     ' + numbers[6] + '°C                    ' + hora[6] },
+                        { key: 'Dato 8:                     ' + numbers[7] + '°C                    ' + hora[7] },
+                        { key: 'Dato 9:                     ' + numbers[8] + '°C                    ' + hora[8] },
+                        { key: 'Dato10:                    ' + numbers[9] + '°C                     ' + hora[9] },
+                    ]}
+                    renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
+                />
+            </TouchableOpacity>
+
+        );
+
+
+    }
 }
 
+//tab navigator
 const Tab = createBottomTabNavigator();
 
-export default function TemperaturaScreen({ navigation }) {
-    return (
+//clase> screen padre
+export default class TemperaturaScreen extends React.Component {
 
-        <Tab.Navigator
-            tabBarOptions={{
-                activeTintColor: 'blue',
-                inactiveTintColor: 'gray',
-            }}
-        >
-            <Tab.Screen  name="Grafica" component={GraficasScreen} />
-            <Tab.Screen  name="Datos" component={DatosScreen} />
-        </Tab.Navigator>
+    static navigationOptions = {
+        header: null,
+    };
 
-    );
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    constructor(props) {
+        super(props);
+
+        const client = new Paho.MQTT.Client('ioticos.org', Number(8093), 'CLIMATETEMP');
+        client.onConnectionLost = this.onConnectionLost;
+        client.onMessageArrived = this.onMessageArrived;
+        
+
+        client.connect({ userName: 'rJ6XFUSwA6ypIHM', password: 'aTuDefz29HIVrlr', keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+        this.state = {
+            temp: '...',
+            client,
+            loading: true,
+            showError: false
+        };
+
+    };
+
+
+
+
+    onConnectionLost = (responseObject) => {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:" + responseObject.errorMessage);
+
+
+        }
+    }
+
+    onConnect = () => {
+        const { client } = this.state;
+        client.subscribe('m4xvQf1qekvtaCH/temperatura')
+        console.log("Conectado al broker")
+
+    }
+
+    onMessageArrived = (message) => {
+        console.log(message.payloadString)
+        tabla2 = message.payloadString
+        tabla = Number(tabla2).toFixed(2);
+        while (i > 0) {
+            numbers[i] = numbers[i - 1]
+            hora[i] = hora[i - 1]
+            data[i] = data[i - 1]
+            i = i - 1
+
+        }
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+        i = 9
+        numbers[0] = tabla
+        data[0] = Number(tabla)
+        hora[0] = hours + ':' + min + ':' + sec
+
+
+    }
+    ////////////////////////////////////////////
+
+
+    onerror = () => {
+        console.log("falle");
+
+    }
+
+
+
+
+    render() {
+        /////////////////////////////////////
+        return (
+
+
+            <Tab.Navigator
+                tabBarOptions={{
+                    activeTintColor: 'black',
+                    inactiveTintColor: 'black',
+                    labelPosition: 'below-icon',
+                    inactiveBackgroundColor: '#cbd4e0',
+                    activeBackgroundColor: '#00b7ff',
+                    showIcon: false,
+                    labelStyle: {
+
+                        fontSize: 20,
+                    },
+
+
+                }}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            >
+
+
+                <Tab.Screen name="Grafica" component={GraficasScreen} />
+                <Tab.Screen name="Datos" component={DatosScreen} />
+
+            </Tab.Navigator >
+
+
+        );
+
+
+    }
 }
 
-
+//estilos
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 22
     },
     item: {
+        textAlign: 'justify',
         padding: 10,
         fontSize: 18,
-        height: 44,
+        height: 40,
     },
 })
 
