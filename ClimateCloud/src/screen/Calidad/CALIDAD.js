@@ -1,7 +1,7 @@
 import React from 'react'
-import { LineChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
+import { AreaChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
 import { Circle } from 'react-native-svg'
-
+import * as shape from 'd3-shape'
 
 import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast } from 'react-native';
 
@@ -94,7 +94,7 @@ class GraficasScreen extends React.Component {
                 </View>
 
 
-                <View style={{ height: 440, width: 390, padding: 20, flexDirection: 'row' }}>
+                <View style={{left: 1, height: 425 ,  width: 410, padding: 20, flexDirection: 'row' ,backgroundColor: 'black',borderRadius: 20}}>
                     <YAxis
                         data={data}
                         style={{ marginBottom: xAxisHeight }}
@@ -104,16 +104,17 @@ class GraficasScreen extends React.Component {
                         formatLabel={value => `${value} ug/m3`}
                     />
                     <View style={{ flex: 1, marginLeft: 10 }}>
-                        <LineChart
+                    <AreaChart
                             style={{ flex: 1 }}
                             data={data}
                             contentInset={verticalContentInset}
-                            svg={{ stroke: 'rgb(134, 65, 244)' }}
-
+                            svg={{ stroke: 'rgb(134, 65, 244)', fill: 'rgba(134, 65, 244, 0.2)'}}
+                            curve={shape.curveNatural}
+                            
                         >
                             <Grid />
                             <Decorator />
-                        </LineChart>
+                        </AreaChart>
 
 
                         <XAxis
