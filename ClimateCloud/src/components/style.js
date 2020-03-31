@@ -1,5 +1,4 @@
 export default {
-
     container: {
         backgroundColor: 'white',
         flex: 1,
@@ -33,11 +32,11 @@ export default {
         borderRadius: 10,
     },
     userImagenLOGIN: {
-        top: 30,
+        top: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 310,
-        height: 200,
+        width: 200,
+        height: 130,
         borderRadius: 0,
     },
     camaraContainer: {

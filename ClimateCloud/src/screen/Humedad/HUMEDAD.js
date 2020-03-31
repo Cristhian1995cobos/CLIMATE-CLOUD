@@ -3,7 +3,7 @@ import { AreaChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
 import { Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
 
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast ,Alert } from 'react-native';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,6 +13,7 @@ import s from '../../components/style'
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
 
+import variables from '../../components/variables'
 
 //variables
 let tabla
@@ -108,7 +109,7 @@ class GraficasScreen extends React.Component {
                             style={{ flex: 1 }}
                             data={data}
                             contentInset={verticalContentInset}
-                            svg={{ stroke: 'rgb(134, 65, 244)', fill: 'rgba(134, 65, 244, 0.2)'}}
+                            svg={{ stroke: '#00b7ff', fill: 'rgba(0, 183, 255, 0.2)'}}
                             curve={shape.curveNatural}
                             
                         >
@@ -219,18 +220,19 @@ export default class CalidadScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        const client = new Paho.MQTT.Client('ioticos.org', Number(8093), 'CLIMATEHUM');
+        const client = new Paho.MQTT.Client(variables.host, Number(8093), 'CLIMATEHUM');
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
+        
 
-        client.connect({ userName: 'rJ6XFUSwA6ypIHM', password: 'aTuDefz29HIVrlr', keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+        client.connect({ userName: variables.username, password: variables.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
         this.state = {
+            host:'',
             temp: '...',
             client,
             loading: true,
             showError: false
         };
-
     };
 
 
@@ -246,13 +248,13 @@ export default class CalidadScreen extends React.Component {
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe('m4xvQf1qekvtaCH/humedad')
+        client.subscribe(variables.roottopic+'/humedad')
         console.log("Conectado al broker")
 
     }
 
     onMessageArrived = (message) => {
-        console.log(message.payloadString)
+       // console.log(message.payloadString)
         tabla2 = message.payloadString
         tabla = Number(tabla2).toFixed(2);
         while (i > 0) {
@@ -277,7 +279,9 @@ export default class CalidadScreen extends React.Component {
 
     onerror = () => {
         console.log("falle");
-
+        this.setState(
+            { loading: false }
+        )
     }
 
 
@@ -285,6 +289,27 @@ export default class CalidadScreen extends React.Component {
 
     render() {
         /////////////////////////////////////
+        if (this.state.loading != true) {
+            return (
+                Alert.alert('No estas conetado', 'Vuelve a al LOGIN'),
+                < TouchableOpacity >
+                <View style={styles.container}>
+                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                </View>
+
+                <View style={styles.container}>
+                <Text style={s.userSubTitulo2}>Humedad Relativa</Text>
+                </View>
+                <View style={s.userContainer}>
+                    <Image style={s.userImageniconos} source={require('../../components/img/soltar.png')} />
+
+                </View>
+               
+            </TouchableOpacity >
+               
+            )
+
+        } else {
         return (
 
 
@@ -314,7 +339,7 @@ export default class CalidadScreen extends React.Component {
 
 
         );
-
+            }
 
     }
 }

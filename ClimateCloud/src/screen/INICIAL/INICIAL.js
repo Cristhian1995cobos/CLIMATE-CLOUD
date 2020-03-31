@@ -1,3 +1,4 @@
+//SCRIPT DEL MENU DRAWER (LLAMA A LAS TRES OPCIONES: TMPERATURASCREEN, CALIDADSCREEN Y HUMEDADSCREEN)
 import * as React from 'react';
 import { Button, View, Text, TouchableOpacity, Image} from 'react-native';
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
@@ -32,10 +33,11 @@ function Menu(props){
 const Drawer = createDrawerNavigator();
 
 export default function INICIAL() {
+  
   return (
     
-      <Drawer.Navigator drawerContent={(props)=> <Menu {...props}/>}>
-        <Drawer.Screen name="Temperatura" component={TemperaturaScreen} />
+      <Drawer.Navigator drawerContent={(props)=> <Menu {...props}/>} initialRouteName="Temperatura" >
+        <Drawer.Screen name="Temperatura" component={TemperaturaScreen}  />
         <Drawer.Screen name="Calidad de aire" component={CalidadScreen} />
         <Drawer.Screen name="Humedad" component={HumedadScreen} />
       </Drawer.Navigator>

@@ -1,3 +1,4 @@
+//SCRIPT DEL MENU STACK (LLAMA A EL LOGIN: CONFIGURACIÓN Y LA APLICACION GENERAL: INICIAL)
 import React, { Component } from 'react';
 import { Text, TextInput, Button, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
@@ -5,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import INICIAL from '../INICIAL/INICIAL'
 import s from '../../components/style'
+import Configuracion from '../Configuracion/Configuracion2'
 
 
 const Stack = createStackNavigator();
@@ -25,9 +27,9 @@ export default class LOGIN extends React.Component {
                 <Stack.Navigator initialRouteName="LOGIN">
                     <Stack.Screen
                         name="LOGIN"
-                        component={HomeScreen}
+                        component={Configuracion}
                         options={{
-                            title: 'HOME',
+                            title: 'LOGIN',
                             headerStyle: {
                                 backgroundColor: '#00b7ff',
                             },
@@ -41,7 +43,7 @@ export default class LOGIN extends React.Component {
                         name="INICIAL"
                         component={INICIAL}
                         options={{
-                            title: 'REVISION DE DATOS',
+                            title: 'REGRESAR AL LOGIN',
                             headerStyle: {
                                 backgroundColor: '#00b7ff',
                             },
@@ -62,43 +64,6 @@ export default class LOGIN extends React.Component {
 
 
 
-function HomeScreen({ navigation }) {
-
-    return (
-
-
-
-        <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
-
-            <TouchableOpacity>
-                <View>
-                    <Image style={s.userImagenLOGIN} source={require('../../components/img/logo-brainapps.jpg')} />
-                   
-               
-                <Text style={{textAlign: 'center',
-        fontWeight:'bold',
-        fontSize: 45,
-        top: 50}}>BIENVENIDO</Text>
-                </View>
-               
-            </TouchableOpacity>
-            <View style={{textAlign: 'center',
-        fontWeight:'bold',
-        
-        top: 60}}>
-            <Button
-                title="EMPEZAR"
-                
-                onPress={() => navigation.navigate('INICIAL')}
-            />
-            </View>
-            
-
-        </View>
-
-    );
-
-}
 
 
 const styles = StyleSheet.create({

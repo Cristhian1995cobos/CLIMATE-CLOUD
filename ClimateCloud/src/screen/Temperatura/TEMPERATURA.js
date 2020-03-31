@@ -1,9 +1,9 @@
 import React from 'react'
 import { AreaChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
-import { Circle} from 'react-native-svg'
+import { Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
 
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast, Alert } from 'react-native';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,9 +12,11 @@ import s from '../../components/style'
 ////////////////////////////////////////////////
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
-
-
+////////////////////////////////////////////////
+import variables from '../../components/variables'
+import { call } from 'react-native-reanimated';
 //variables
+let client
 let tabla
 let tabla2
 let numbers = ['        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos'];
@@ -58,7 +60,7 @@ class GraficasScreen extends React.Component {
 
     render() {
 
-        const axesSvg = { fontSize: 15, fill: '#00b7ff' };
+        const axesSvg = { fontSize: 15, fill: 'rgba(255, 69, 0, 1)' };
         const verticalContentInset = { top: 10, bottom: 10 }
         const xAxisHeight = 30
 
@@ -70,8 +72,8 @@ class GraficasScreen extends React.Component {
                     cx={x(index)}
                     cy={y(value)}
                     r={4}
-                    stroke={'#00b7ff'}
-                    fill={'#00b7ff'}
+                    stroke={'rgba(255, 69, 0, 1)'}
+                    fill={'rgba(255, 69, 0, 1)'}
                 />
             ))
         }
@@ -93,7 +95,7 @@ class GraficasScreen extends React.Component {
 
                 </View>
 
-                <View style={{left: 1, height: 425 ,  width: 410, padding: 20, flexDirection: 'row' ,backgroundColor: 'black',borderRadius: 20}}>
+                <View style={{ left: 1, height: 425, width: 410, padding: 20, flexDirection: 'row', backgroundColor: 'black', borderRadius: 20 }}>
                     <YAxis
                         data={data}
                         style={{ marginBottom: xAxisHeight }}
@@ -107,9 +109,9 @@ class GraficasScreen extends React.Component {
                             style={{ flex: 1 }}
                             data={data}
                             contentInset={verticalContentInset}
-                            svg={{ stroke: 'rgb(134, 65, 244)', fill: 'rgba(134, 65, 244, 0.2)'}}
+                            svg={{ stroke: 'rgba(255, 69, 0, 1)', fill: 'rgba(255, 69, 0, 0.2)' }}
                             curve={shape.curveNatural}
-                            
+
                         >
                             <Grid />
                             <Decorator />
@@ -119,7 +121,7 @@ class GraficasScreen extends React.Component {
                         <XAxis
                             style={{ marginHorizontal: -10, height: xAxisHeight }}
                             data={data}
-                            formatLabel={(value, index) => index+1}
+                            formatLabel={(value, index) => index + 1}
                             contentInset={{ left: 10, right: 10 }}
                             svg={axesSvg}
                         />
@@ -211,33 +213,29 @@ export default class TemperaturaScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     constructor(props) {
         super(props);
-
-        const client = new Paho.MQTT.Client('ioticos.org', Number(8093), 'CLIMATETEMP');
+        client = new Paho.MQTT.Client(variables.host, Number(8093), 'CLIMATETEMP');
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
-        
 
-        client.connect({ userName: 'rJ6XFUSwA6ypIHM', password: 'aTuDefz29HIVrlr', keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+        client.connect({ userName: variables.username, password: variables.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+
+
         this.state = {
-            temp: '...',
-            client,
             loading: true,
-            showError: false
+            client,
+            new_data: false
+
+
         };
 
     };
 
-
-
-
     onConnectionLost = (responseObject) => {
         if (responseObject.errorCode !== 0) {
-            console.log("onConnectionLost:" + responseObject.errorMessage);
+            console.log("onConnectionLost2:" + responseObject.errorMessage);
 
 
         }
@@ -245,15 +243,17 @@ export default class TemperaturaScreen extends React.Component {
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe('m4xvQf1qekvtaCH/temperatura')
+        client.subscribe(variables.roottopic+'/temperatura')
         console.log("Conectado al broker")
 
     }
-
+   
+ 
     onMessageArrived = (message) => {
         console.log(message.payloadString)
         tabla2 = message.payloadString
         tabla = Number(tabla2).toFixed(2);
+        i = 9
         while (i > 0) {
             numbers[i] = numbers[i - 1]
             hora[i] = hora[i - 1]
@@ -264,57 +264,80 @@ export default class TemperaturaScreen extends React.Component {
         var hours = new Date().getHours(); //Current Hours
         var min = new Date().getMinutes(); //Current Minutes
         var sec = new Date().getSeconds(); //Current Seconds
-        i = 9
+
         numbers[0] = tabla
         data[0] = Number(tabla)
         hora[0] = hours + ':' + min + ':' + sec
 
 
     }
-    ////////////////////////////////////////////
-
 
     onerror = () => {
         console.log("falle");
+        this.setState(
+            { loading: false }
+        )
 
     }
 
-
+     
 
 
     render() {
         /////////////////////////////////////
-        return (
+        if (this.state.loading != true) {
+            return (
+                Alert.alert('No estas conetado', 'Vuelve a al LOGIN'),
+                < TouchableOpacity >
+                <View style={styles.container}>
+                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                </View>
+
+                <View style={styles.container}>
+                    <Text style={s.userSubTitulo2}>Temperatura</Text>
+                </View>
+                <View style={s.userContainer}>
+                    <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
+
+                </View>
+               
+            </TouchableOpacity >
+               
+            )
+
+        } else {
+   
+            return (
 
 
-            <Tab.Navigator
-                tabBarOptions={{
-                    activeTintColor: 'black',
-                    inactiveTintColor: 'black',
-                    labelPosition: 'below-icon',
-                    inactiveBackgroundColor: '#cbd4e0',
-                    activeBackgroundColor: '#00b7ff',
-                    showIcon: false,
-                    labelStyle: {
+                <Tab.Navigator
+                    tabBarOptions={{
+                        activeTintColor: 'black',
+                        inactiveTintColor: 'black',
+                        labelPosition: 'below-icon',
+                        inactiveBackgroundColor: '#cbd4e0',
+                        activeBackgroundColor: '#00b7ff',
+                        showIcon: false,
+                        labelStyle: {
 
-                        fontSize: 20,
-                    },
-
-
-                }}
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-            >
+                            fontSize: 20,
+                        },
 
 
-                <Tab.Screen name="Grafica" component={GraficasScreen} />
-                <Tab.Screen name="Datos" component={DatosScreen} />
-
-            </Tab.Navigator >
-
-
-        );
+                    }}
+                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                >
 
 
+                    <Tab.Screen name="Grafica" component={GraficasScreen} />
+                    <Tab.Screen name="Datos" component={DatosScreen} />
+
+                </Tab.Navigator >
+
+
+            );
+        
+                }
     }
 }
 
