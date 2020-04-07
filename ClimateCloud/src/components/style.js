@@ -30,6 +30,8 @@ export default {
         width: 50,
         height: 50,
         borderRadius: 10,
+        
+        alignItems: 'center',
     },
     userImagenLOGIN: {
         top: 10,
@@ -62,6 +64,7 @@ export default {
         fontSize: 16
     },
     userTitulo2: {
+        height: 30,
         textAlign: 'center',
         fontWeight:'bold',
         fontSize: 25
@@ -77,16 +80,18 @@ export default {
     userSubTitulo2: {
         textAlign: 'center',
         fontWeight:'bold',
-        fontSize: 16,
+        fontSize: 20,
         color: '#00b7ff',
-        paddingVertical: 5
+        paddingVertical: 5,
+        top:-5
     },
     userSubTitulo3: {
-        textAlign: 'right',
+        textAlign: 'left',
         fontWeight:'bold',
-        fontSize: 16,
+        fontSize: 20,
         color: '#00b7ff',
-        paddingVertical: 5
+        paddingVertical: 0,
+        top:0
     },
     menuContainer: {
         flexDirection: 'row',

@@ -43,7 +43,7 @@ export default class LOGIN extends React.Component {
                         name="INICIAL"
                         component={INICIAL}
                         options={{
-                            title: 'REGRESAR AL LOGIN',
+                            title: 'BACK TO LOGIN',
                             headerStyle: {
                                 backgroundColor: '#00b7ff',
                             },

@@ -3,7 +3,8 @@ import { AreaChart, YAxis, XAxis, Grid } from 'react-native-svg-charts'
 import { Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
 
-import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast, Alert, ScrollView } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,7 +19,7 @@ import variables from '../../components/variables'
 //variables
 let tabla
 let tabla2
-let numbers = ['        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos'];
+let numbers = ['        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data'];
 let hora = ['', '', '', '', '', '', '', '', '', ''];
 let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let i
@@ -79,58 +80,76 @@ class GraficasScreen extends React.Component {
 
 
         return (
+            <ScrollView>
+                <View>
+                    <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <Button
+                            type="clear"
+                            icon={
+                                <Icon
+                                    name='navicon'
+                                    type='evilicon'
+                                    size={25}
+                                    color='#00b7ff'
+                                />
 
+                            }
+                            onPress={() => this.props.navigation.openDrawer()}
 
-            <TouchableOpacity>
-                <View style={styles.container}>
-                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
-                </View>
-
-                <View style={styles.container}>
-                    <Text style={s.userSubTitulo2}>Calidad de aire</Text>
-                </View>
-                <View style={s.userContainer}>
-                    <Image style={s.userImageniconos} source={require('../../components/img/oxigeno.png')} />
-
-                </View>
-
-
-                <View style={{ left: 1, height: 425, width: 410, padding: 20, flexDirection: 'row', backgroundColor: 'black', borderRadius: 20 }}>
-                    <YAxis
-                        data={data}
-                        style={{ marginBottom: xAxisHeight }}
-                        contentInset={verticalContentInset}
-                        svg={axesSvg}
-                        //  numberOfTicks={ 10 }
-                        formatLabel={value => `${value} ug/m3`}
-                    />
-                    <View style={{ flex: 1, marginLeft: 10 }}>
-                        <AreaChart
-                            style={{ flex: 1 }}
-                            data={data}
-                            contentInset={verticalContentInset}
-                            svg={{ stroke: 'rgb(134, 65, 244)', fill: 'rgba(134, 65, 244, 0.2)' }}
-                            curve={shape.curveNatural}
-
-                        >
-                            <Grid />
-                            <Decorator />
-                        </AreaChart>
-
-
-                        <XAxis
-                            style={{ marginHorizontal: -10, height: xAxisHeight }}
-                            data={data}
-                            formatLabel={(value, index) => index + 1}
-                            contentInset={{ left: 10, right: 10 }}
-                            svg={axesSvg}
                         />
+
                     </View>
+                    <View style={{ top: -10 }}>
+                        <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                    </View>
+
+                    <View style={styles.container}>
+                        <Text style={s.userSubTitulo2}>Air quality</Text>
+                    </View>
+                    <View style={{ top: -20, alignItems: 'center' }}>
+                        <Image style={s.userImageniconos} source={require('../../components/img/oxigeno.png')} />
+                        <Text style={s.userSubTitulo2}>{numbers[0]} ug/m3 </Text>
+                    </View>
+
+                    <View style={{ top: -30, left: 1, height: 425, width: 410, padding: 20, flexDirection: 'row', backgroundColor: 'white', borderRadius: 0, alignItems: 'center' }}>
+
+
+                        <YAxis
+                            data={data}
+                            style={{ marginBottom: xAxisHeight }}
+                            contentInset={verticalContentInset}
+                            svg={axesSvg}
+                            //  numberOfTicks={ 10 }
+                            formatLabel={value => `${value} ug/m3`}
+                        />
+                        <View style={{ flex: 1, marginLeft: 10 }}>
+                            <AreaChart
+                                style={{ flex: 1 }}
+                                data={data}
+                                contentInset={verticalContentInset}
+                                svg={{ stroke: 'rgb(134, 65, 244)', fill: 'rgba(134, 65, 244, 0.2)' }}
+                                curve={shape.curveNatural}
+
+                            >
+                                <Grid />
+                                <Decorator />
+                            </AreaChart>
+
+
+                            <XAxis
+                                style={{ marginHorizontal: -10, height: xAxisHeight }}
+                                data={data}
+                                formatLabel={(value, index) => index + 1}
+                                contentInset={{ left: 10, right: 10 }}
+                                svg={axesSvg}
+                            />
+                        </View>
+                    </View>
+
+
+
                 </View>
-
-
-
-            </TouchableOpacity>
+            </ScrollView>
 
         );
 
@@ -168,36 +187,53 @@ class DatosScreen extends React.Component {
         return (
 
 
-            <TouchableOpacity>
-                <View style={styles.container}>
+            <ScrollView>
+                <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <Button
+                        type="clear"
+                        icon={
+                            <Icon
+                                name='navicon'
+                                type='evilicon'
+                                size={25}
+                                color='#00b7ff'
+                            />
+
+                        }
+                        onPress={() => this.props.navigation.openDrawer()}
+
+                    />
+
+                </View>
+                <View style={{ top: -10 }}>
                     <Text style={s.userTitulo2}>Climate Cloud App</Text>
                 </View>
 
                 <View style={styles.container}>
-                    <Text style={s.userSubTitulo2}>Calidad de aire</Text>
+                    <Text style={s.userSubTitulo2}>Air quality</Text>
                 </View>
-                <View style={s.userContainer}>
+                <View style={{ top: -20, alignItems: 'center' }}>
                     <Image style={s.userImageniconos} source={require('../../components/img/oxigeno.png')} />
-
                 </View>
-                <Text style={s.userSubTitulo3}> Dato                               Hora             </Text>
+
+                <Text style={s.userSubTitulo3}>                                   Data                       Hour         </Text>
                 <FlatList
                     data={[
-                        { key: 'Dato 1:               ' + numbers[0] + ' ug/m3                 ' + hora[0] },
-                        { key: 'Dato 2:               ' + numbers[1] + ' ug/m3                 ' + hora[1] },
-                        { key: 'Dato 3:               ' + numbers[2] + ' ug/m3                 ' + hora[2] },
-                        { key: 'Dato 4:               ' + numbers[3] + ' ug/m3                 ' + hora[3] },
-                        { key: 'Dato 5:               ' + numbers[4] + ' ug/m3                 ' + hora[4] },
-                        { key: 'Dato 6:               ' + numbers[5] + ' ug/m3                 ' + hora[5] },
-                        { key: 'Dato 7:               ' + numbers[6] + ' ug/m3                 ' + hora[6] },
-                        { key: 'Dato 8:               ' + numbers[7] + ' ug/m3                 ' + hora[7] },
-                        { key: 'Dato 9:               ' + numbers[8] + ' ug/m3                 ' + hora[8] },
-                        { key: 'Dato10:               ' + numbers[9] + ' ug/m3                 ' + hora[9] },
+                        { key: 'Data 1:               ' + numbers[0] + ' ug/m3                 ' + hora[0] },
+                        { key: 'Data 2:               ' + numbers[1] + ' ug/m3                 ' + hora[1] },
+                        { key: 'Data 3:               ' + numbers[2] + ' ug/m3                 ' + hora[2] },
+                        { key: 'Data 4:               ' + numbers[3] + ' ug/m3                 ' + hora[3] },
+                        { key: 'Data 5:               ' + numbers[4] + ' ug/m3                 ' + hora[4] },
+                        { key: 'Data 6:               ' + numbers[5] + ' ug/m3                 ' + hora[5] },
+                        { key: 'Data 7:               ' + numbers[6] + ' ug/m3                 ' + hora[6] },
+                        { key: 'Data 8:               ' + numbers[7] + ' ug/m3                 ' + hora[7] },
+                        { key: 'Data 9:               ' + numbers[8] + ' ug/m3                 ' + hora[8] },
+                        { key: 'Data10:               ' + numbers[9] + ' ug/m3                 ' + hora[9] },
                     ]}
                     renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
                 />
-            </TouchableOpacity>
-
+            
+</ScrollView >
         );
 
 
@@ -249,10 +285,16 @@ export default class CalidadScreen extends React.Component {
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe(variables.roottopic+'/calidadaire')
+        client.subscribe(variables.roottopic + '/calidadaire')
         console.log("Conectado al broker")
 
     }
+    componentWillUnmount = () => {
+        const { client } = this.state;
+        client.unsubscribe(variables.roottopic + '/calidadaire')
+        console.log('unsuscribe')
+    }
+
 
     onMessageArrived = (message) => {
         // console.log(message.payloadString)
@@ -295,20 +337,20 @@ export default class CalidadScreen extends React.Component {
             return (
                 Alert.alert('No estas conetado', 'Vuelve a al LOGIN'),
                 < TouchableOpacity >
-                <View style={styles.container}>
-                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
-                </View>
+                    <View style={styles.container}>
+                        <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                    </View>
 
-                <View style={styles.container}>
-                    <Text style={s.userSubTitulo2}>Calidad de aire</Text>
-                </View>
-                <View style={s.userContainer}>
-                    <Image style={s.userImageniconos} source={require('../../components/img/oxigeno.png')} />
+                    <View style={styles.container}>
+                        <Text style={s.userSubTitulo2}>Air quality</Text>
+                    </View>
+                    <View style={s.userContainer}>
+                        <Image style={s.userImageniconos} source={require('../../components/img/oxigeno.png')} />
 
-                </View>
-               
-            </TouchableOpacity >
-               
+                    </View>
+
+                </TouchableOpacity >
+
             )
 
         } else {
@@ -316,16 +358,35 @@ export default class CalidadScreen extends React.Component {
 
 
                 <Tab.Navigator
+                    screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, color, size }) => {
+                            let iconName;
+
+                            if (route.name === 'Grafics') {
+                                iconName = 'areachart';
+                                console.log('entremenu')
+
+                            } else if (route.name === 'Data') {
+                                iconName = 'bars';
+                                console.log('entremenu2')
+                            }
+
+                            // You can return any component that you like here!
+                            return <Icon name={iconName}
+                                type='antdesign'
+                                size={30}
+                                color={color} />;
+                        },
+                    })}
                     tabBarOptions={{
-                        activeTintColor: 'black',
-                        inactiveTintColor: 'black',
+                        activeTintColor: '#00b7ff',
+                        inactiveTintColor: '#cbd4e0',
                         labelPosition: 'below-icon',
-                        inactiveBackgroundColor: '#cbd4e0',
-                        activeBackgroundColor: '#00b7ff',
-                        showIcon: false,
+
+                        showIcon: true,
                         labelStyle: {
 
-                            fontSize: 20,
+                            fontSize: 17,
                         },
 
 
@@ -334,15 +395,15 @@ export default class CalidadScreen extends React.Component {
                 >
 
 
-                    <Tab.Screen name="Grafica" component={GraficasScreen} />
-                    <Tab.Screen name="Datos" component={DatosScreen} />
+                    <Tab.Screen name="Grafics" component={GraficasScreen} />
+                    <Tab.Screen name="Data" component={DatosScreen} />
 
                 </Tab.Navigator >
 
 
             );
-        }
 
+        }
     }
 }
 
@@ -350,7 +411,8 @@ export default class CalidadScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 22
+        paddingTop: 0,
+        top: -16,
     },
     item: {
         textAlign: 'justify',

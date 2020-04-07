@@ -1,6 +1,7 @@
 //EL VERDADERO LOGIN, LLAMA A INICIAL
 import React, { Component } from 'react';
-import { Button, AppRegistry, TextInput, View, Text, Alert ,TouchableOpacity,Image} from 'react-native';
+import { AppRegistry, TextInput, View, Text, Alert, TouchableOpacity, Image ,ScrollView} from 'react-native';
+import { Button, Icon } from 'react-native-elements';
 
 import s from '../../components/style'
 import init from 'react_native_mqtt';
@@ -21,14 +22,17 @@ init({
 });
 export default class Configuracion extends Component {
 
+
+
     constructor(props) {
         super(props);
         this.state = {
-            host: 'ioticos.org',
-            username: 'rJ6XFUSwA6ypIHM',
-            password: 'aTuDefz29HIVrlr',
-            roottopic: 'm4xvQf1qekvtaCH',
-            int: false
+            host: variables.host,
+            username: variables.username,
+            password: variables.password,
+            roottopic: variables.roottopic,
+            int: false,
+            login: true
 
         };
         this.handletextchangehost = this.handletextchangehost.bind(this);
@@ -37,6 +41,7 @@ export default class Configuracion extends Component {
         this.handletextchangeroottopic = this.handletextchangeroottopic.bind(this);
         // this.pressbutton = this.pressbutton.bind(this);
     }
+  
     handletextchangehost(host) {
         this.setState({
             host
@@ -77,9 +82,10 @@ export default class Configuracion extends Component {
             { int: true }
         )
         console.log(this.state.int)
-        Alert.alert('Conectado', 'Se ha conectado con exito a: \nHost:\t ' + this.state.host +
-            '\nUsername:\t ' + this.state.username, [
-            { text: 'OK' }
+        Alert.alert('Connected', 'You have successfully connected to: \nHost:\t ' + this.state.host +
+            '\nUsername:\t ' + this.state.username+'\n',  [
+            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'Get in', onPress: this.pressin  },
         ])
 
 
@@ -87,13 +93,14 @@ export default class Configuracion extends Component {
     onerror = () => {
         //   console.log("falle");
         this.setState(
-            { int: false}
+            { int: false }
         )
         console.log(this.state.int)
-        Alert.alert('Lo sentimos: No conectado', 'Host, Username o Password ingresados incorrectamente', [
-            { text: 'OK' }
+        Alert.alert('Sorry: Not connected', 'Host, Username o Password incorrectly entered', [
+            { text: 'Try again', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
         ])
     }
+ 
     pressbutton = () => {
         variables.host = this.state.host
         variables.username = this.state.username
@@ -108,146 +115,162 @@ export default class Configuracion extends Component {
         const client = new Paho.MQTT.Client(this.state.host, Number(8093), 'CLIMATEPRUEBA');
         client.onConnectionLost = this.onConnectionLost;
 
-        client.connect({ userName: this.state.username, password: this.state.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+        client.connect({ timeout: 5,userName: this.state.username, password: this.state.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
 
+
+    }
+    presssettings = () => {
+
+
+        console.log('confi2 ' + this.state.login)
+        this.setState(
+            { login: true }
+        )
+
+
+        console.log('confi2 ' + this.state.login)
+
+        variables.login = this.state.login
+        console.log('confi ' + variables.login)
+
+        console.log('confi2 ' + this.state.login)
+
+    }
+
+    pressin = () => {
+        variables.login = false,
+            this.setState(
+                { int: false }
+            )
+
+        console.log('aplaste ' + variables.login)
+        console.log('aplaste2 ' + this.state.int)
+        this.props.navigation.navigate('INICIAL')
 
     }
 
     render() {
-if(this.state.int!=true){
-    return (
-        <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-            <TouchableOpacity>
-                <View>
-                    <Image style={s.userImagenLOGIN} source={require('../../components/img/logo-brainapps.jpg')} />
+        if (variables.login != true) {
+           
+            return (
+               
+                <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
+                  
+                        <View>
+                            <Image style={s.userImagenLOGIN} source={require('../../components/img/logo-brainapps.jpg')} />
 
 
-                    <Text style={{
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: 30,
-                        top: 10
-                    }}>LOGIN</Text>
-                </View>
+                            <Text style={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                fontSize: 30,
+                                top: 10
+                            }}>LOGIN</Text>
+                        </View>
 
-            </TouchableOpacity>
-            <View style={{ top: 10 }}>
-                <Text style={s.userSubTitulo2}>Host:</Text>
-            </View>
-            <TextInput placeholder='www.example.com / org'
-                value={this.state.host}
-                style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                onChangeText={this.handletextchangehost}
+                  
+                    <Button
+                        type="clear"
+                        title="Settings"
+                        icon={
+                            <Icon
+                                name='gear'
+                                type='evilicon'
+                                size={60}
+                                color='#00b7ff'
+                            />
+                        }
 
-            />
-            <View style={{ top: 10 }}>
-                <Text style={s.userSubTitulo2}>Usuario:</Text>
-            </View>
-            <TextInput placeholder='Username'
-                value={this.state.username}
-                style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                onChangeText={this.handletextchangeusername}
-            />
-            <View style={{ top: 10 }}>
-                <Text style={s.userSubTitulo2}>Contraseña:</Text>
-            </View>
-            <TextInput placeholder='Password'
-                bolGone={true}
-                value={this.state.password}
-                secureTextEntry={true}
-                style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                onChangeText={this.handletextchangepassword}
-            />
-            <View style={{ top: 10 }}>
-                <Text style={s.userSubTitulo2}>Tema principal:</Text>
-            </View>
-            <TextInput placeholder='Root topic'
-                value={this.state.roottopic}
-                style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                onChangeText={this.handletextchangeroottopic}
-            />
-            <View style={{ top: 20 }}>
-                <Button
-                    title="CONECTAR"
-                    color='#00b7ff'
-                    onPress={this.pressbutton}
-
-                />
-
-            </View>
-            
-        </View >
-    );
-}else{
-        return (
-            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-                <TouchableOpacity>
-                    <View>
-                        <Image style={s.userImagenLOGIN} source={require('../../components/img/logo-brainapps.jpg')} />
+                        onPress={this.presssettings}
+                    />
+                    <View style={{ top: 70 }}>
+                        <Button
+                            title="CONECT"
+                            color='white'
+                            onPress={this.pressbutton}
+                        />
 
 
-                        <Text style={{
-                            textAlign: 'center',
-                            fontWeight: 'bold',
-                            fontSize: 30,
-                            top: 10
-                        }}>LOGIN</Text>
                     </View>
 
-                </TouchableOpacity>
-                <View style={{ top: 10 }}>
-                    <Text style={s.userSubTitulo2}>Host:</Text>
-                </View>
-                <TextInput placeholder='www.example.com / org'
-                    value={this.state.host}
-                    style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                    onChangeText={this.handletextchangehost}
 
-                />
-                <View style={{ top: 10 }}>
-                    <Text style={s.userSubTitulo2}>Usuario:</Text>
                 </View>
-                <TextInput placeholder='Username'
-                    value={this.state.username}
-                    style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                    onChangeText={this.handletextchangeusername}
-                />
-                <View style={{ top: 10 }}>
-                    <Text style={s.userSubTitulo2}>Contraseña:</Text>
-                </View>
-                <TextInput placeholder='Password'
-                    bolGone={true}
-                    value={this.state.password}
-                    secureTextEntry={true}
-                    style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                    onChangeText={this.handletextchangepassword}
-                />
-                <View style={{ top: 10 }}>
-                <Text style={s.userSubTitulo2}>Tema principal:</Text>
-            </View>
-                 <TextInput placeholder='Root topic'
-                value={this.state.roottopic}
-                style={{ height: 40, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
-                onChangeText={this.handletextchangeroottopic}
-            />
-                <View style={{ top: 20 }}>
-                    <Button
-                        title="CONECTAR"
-                        color='#00b7ff'
-                        onPress={this.pressbutton}
+               
+            )
+         
+        } else {
+           
+            return (
+                <ScrollView>
+                <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+                  
+                        <View>
+                            <Image style={s.userImagenLOGIN} source={require('../../components/img/logo-brainapps.jpg')} />
+
+
+                            <Text style={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                fontSize: 30,
+                                top: 10
+                            }}>LOGIN</Text>
+                        </View>
+
+                   
+                    <View style={{ top: 10 }}>
+                        <Text style={s.userSubTitulo2}>Host:</Text>
+                    </View>
+                    <TextInput placeholder='www.example.com / org'
+                        value={this.state.host}
+                        style={{ height: 40,width:200, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
+                        onChangeText={this.handletextchangehost}
 
                     />
-
-                </View>
-                <View style={{ top: 30 }}>
-                    <Button
-                        title="EMPEZAR"
-
-                        onPress={() => this.props.navigation.navigate('INICIAL')}
+                    <View style={{ top: 10 }}>
+                        <Text style={s.userSubTitulo2}>Username:</Text>
+                    </View>
+                    <TextInput placeholder='Username'
+                        value={this.state.username}
+                        style={{ height: 40,width:200, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
+                        onChangeText={this.handletextchangeusername}
                     />
-                </View>
-            </View >
-        );
-                    }
+                    <View style={{ top: 10 }}>
+                        <Text style={s.userSubTitulo2}>Password:</Text>
+                    </View>
+                    <TextInput placeholder='Password'
+                        bolGone={true}
+                        value={this.state.password}
+                        secureTextEntry={true}
+                        style={{ height: 40,width:200, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
+                        onChangeText={this.handletextchangepassword}
+                    />
+                    <View style={{ top: 10 }}>
+                        <Text style={s.userSubTitulo2}>Root topic:</Text>
+                    </View>
+                    <TextInput placeholder='Root topic'
+                        value={this.state.roottopic}
+                        style={{ height: 40,width:200, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
+                        onChangeText={this.handletextchangeroottopic}
+                    />
+                   
+                    <View style={{ top: 20 }}>
+                        <Button
+                            title="CONECT"
+                            color='white'
+                            onPress={this.pressbutton}
+                        />
+
+
+                    </View>
+                    <View style={{ color:'white',height:85}}>
+                    <Text style={{}}></Text>
+                    </View>
+                   
+
+                </View >
+                </ScrollView>
+            );
+        }
+        //      }
     }
 }

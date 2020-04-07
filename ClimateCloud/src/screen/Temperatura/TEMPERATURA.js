@@ -4,10 +4,9 @@ import { Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
 
 import { View, Text, TouchableOpacity, Image, FlatList, StyleSheet, Toast, Alert } from 'react-native';
-
+import { Button, Icon } from 'react-native-elements';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import s from '../../components/style'
 ////////////////////////////////////////////////
 import init from 'react_native_mqtt';
@@ -15,11 +14,12 @@ import { AsyncStorage } from 'react-native';
 ////////////////////////////////////////////////
 import variables from '../../components/variables'
 import { call } from 'react-native-reanimated';
+import { ScrollView } from 'react-native-gesture-handler';
 //variables
 let client
 let tabla
 let tabla2
-let numbers = ['        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos', '        Esperando datos'];
+let numbers = ['        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data', '        Wating Data'];
 let hora = ['', '', '', '', '', '', '', '', '', ''];
 let data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 let i
@@ -80,22 +80,38 @@ class GraficasScreen extends React.Component {
 
 
         return (
+            <ScrollView>
+            <View>
+                <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <Button
+                        type="clear"
+                        icon={
+                            <Icon
+                                name='navicon'
+                                type='evilicon'
+                                size={25}
+                                color='#00b7ff'
+                            />
 
+                        }
+                        onPress={() => this.props.navigation.openDrawer()}
 
-            <TouchableOpacity>
-                <View style={styles.container}>
+                    />
+
+                </View>
+                <View style={{ top: -10 }}>
                     <Text style={s.userTitulo2}>Climate Cloud App</Text>
                 </View>
 
                 <View style={styles.container}>
-                    <Text style={s.userSubTitulo2}>Temperatura</Text>
+                    <Text style={s.userSubTitulo2}>Temperature</Text>
                 </View>
-                <View style={s.userContainer}>
+                <View style={{ top: -20, alignItems: 'center' }}>
                     <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
-
+                    <Text style={s.userSubTitulo2}>{numbers[0]} °C </Text>
                 </View>
 
-                <View style={{ left: 1, height: 425, width: 410, padding: 20, flexDirection: 'row', backgroundColor: 'black', borderRadius: 20 }}>
+                <View style={{ top: -30, left: 1, height: 425, width: 410, padding: 20, flexDirection: 'row', backgroundColor: 'white', borderRadius: 0, alignItems:'center'}}>
                     <YAxis
                         data={data}
                         style={{ marginBottom: xAxisHeight }}
@@ -104,7 +120,7 @@ class GraficasScreen extends React.Component {
                         //  numberOfTicks={ 10 }
                         formatLabel={value => `${value}ºC`}
                     />
-                    <View style={{ flex: 1, marginLeft: 10 }}>
+                    <View style={{ flex: 1, marginLeft: 10}}>
                         <AreaChart
                             style={{ flex: 1 }}
                             data={data}
@@ -129,8 +145,9 @@ class GraficasScreen extends React.Component {
                 </View>
 
 
+            </View>
+            </ScrollView>
 
-            </TouchableOpacity>
 
         );
 
@@ -167,36 +184,52 @@ class DatosScreen extends React.Component {
 
         return (
 
+            <ScrollView>
+            <View style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+            <Button
+                        type="clear"
+                        icon={
+                            <Icon
+                                name='navicon'
+                                type='evilicon'
+                                size={25}
+                                color='#00b7ff'
+                            />
 
-            <TouchableOpacity>
-                <View style={styles.container}>
+                        }
+                        onPress={() => this.props.navigation.openDrawer()}
+
+                    />
+
+            </View>
+             <View style={{ top: -10 }}>
                     <Text style={s.userTitulo2}>Climate Cloud App</Text>
                 </View>
 
                 <View style={styles.container}>
-                    <Text style={s.userSubTitulo2}>Temperatura </Text>
+                    <Text style={s.userSubTitulo2}>Temperature</Text>
                 </View>
-                <View style={s.userContainer}>
-                    <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
-
-                </View>
-                <Text style={s.userSubTitulo3}> Dato                               Hora             </Text>
+                <View style={{ top: -20, alignItems: 'center' }}>
+                <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
+            </View>
+           
+                <Text style={s.userSubTitulo3}>                                   Data                       Hour         </Text>
                 <FlatList
                     data={[
-                        { key: 'Dato 1:                     ' + numbers[0] + '°C                    ' + hora[0] },
-                        { key: 'Dato 2:                     ' + numbers[1] + '°C                    ' + hora[1] },
-                        { key: 'Dato 3:                     ' + numbers[2] + '°C                    ' + hora[2] },
-                        { key: 'Dato 4:                     ' + numbers[3] + '°C                    ' + hora[3] },
-                        { key: 'Dato 5:                     ' + numbers[4] + '°C                    ' + hora[4] },
-                        { key: 'Dato 6:                     ' + numbers[5] + '°C                    ' + hora[5] },
-                        { key: 'Dato 7:                     ' + numbers[6] + '°C                    ' + hora[6] },
-                        { key: 'Dato 8:                     ' + numbers[7] + '°C                    ' + hora[7] },
-                        { key: 'Dato 9:                     ' + numbers[8] + '°C                    ' + hora[8] },
-                        { key: 'Dato10:                    ' + numbers[9] + '°C                     ' + hora[9] },
+                        { key: 'Data 1:                     ' + numbers[0] + '°C                    ' + hora[0] },
+                        { key: 'Data 2:                     ' + numbers[1] + '°C                    ' + hora[1] },
+                        { key: 'Data 3:                     ' + numbers[2] + '°C                    ' + hora[2] },
+                        { key: 'Data 4:                     ' + numbers[3] + '°C                    ' + hora[3] },
+                        { key: 'Data 5:                     ' + numbers[4] + '°C                    ' + hora[4] },
+                        { key: 'Data 6:                     ' + numbers[5] + '°C                    ' + hora[5] },
+                        { key: 'Data 7:                     ' + numbers[6] + '°C                    ' + hora[6] },
+                        { key: 'Data 8:                     ' + numbers[7] + '°C                    ' + hora[7] },
+                        { key: 'Data 9:                     ' + numbers[8] + '°C                    ' + hora[8] },
+                        { key: 'Data10:                    ' + numbers[9] + '°C                     ' + hora[9] },
                     ]}
                     renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
                 />
-            </TouchableOpacity>
+            </ScrollView>
 
         );
 
@@ -243,12 +276,16 @@ export default class TemperaturaScreen extends React.Component {
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe(variables.roottopic+'/temperatura')
+        client.subscribe(variables.roottopic + '/temperatura')
         console.log("Conectado al broker")
 
     }
-   
- 
+    componentWillUnmount = () => {
+        const { client } = this.state;
+        client.unsubscribe(variables.roottopic + '/temperatura')
+        console.log('unsuscribe')
+    }
+
     onMessageArrived = (message) => {
         console.log(message.payloadString)
         tabla2 = message.payloadString
@@ -280,47 +317,66 @@ export default class TemperaturaScreen extends React.Component {
 
     }
 
-     
+
 
 
     render() {
         /////////////////////////////////////
         if (this.state.loading != true) {
             return (
-                Alert.alert('No estas conetado', 'Vuelve a al LOGIN'),
+                Alert.alert('Not connected', 'Back to LOGIN'),
                 < TouchableOpacity >
-                <View style={styles.container}>
-                    <Text style={s.userTitulo2}>Climate Cloud App</Text>
-                </View>
+                    <View style={styles.container}>
+                        <Text style={s.userTitulo2}>Climate Cloud App</Text>
+                    </View>
 
-                <View style={styles.container}>
-                    <Text style={s.userSubTitulo2}>Temperatura</Text>
-                </View>
-                <View style={s.userContainer}>
-                    <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
+                    <View style={styles.container}>
+                        <Text style={s.userSubTitulo2}>Temperature</Text>
+                    </View>
+                    <View style={s.userContainer}>
+                        <Image style={s.userImageniconos} source={require('../../components/img/caliente.png')} />
 
-                </View>
-               
-            </TouchableOpacity >
-               
+                    </View>
+
+                </TouchableOpacity >
+
             )
 
         } else {
-   
+
             return (
 
 
                 <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                      let iconName;
+          
+                      if (route.name === 'Grafics') {
+                        iconName = 'areachart';
+                        console.log('entremenu')
+                        
+                      } else if (route.name === 'Data') {
+                        iconName ='bars';
+                        console.log('entremenu2')
+                      }
+          
+                      // You can return any component that you like here!
+                      return <Icon  name= {iconName}
+                      type='antdesign'
+                      size={30}
+                      color={color} />;
+                    },
+                  })}
                     tabBarOptions={{
-                        activeTintColor: 'black',
-                        inactiveTintColor: 'black',
+                        activeTintColor: '#00b7ff',
+                        inactiveTintColor: '#cbd4e0',
                         labelPosition: 'below-icon',
-                        inactiveBackgroundColor: '#cbd4e0',
-                        activeBackgroundColor: '#00b7ff',
-                        showIcon: false,
+                        
+                        showIcon: true,
                         labelStyle: {
 
-                            fontSize: 20,
+                            fontSize: 17,
                         },
 
 
@@ -329,15 +385,15 @@ export default class TemperaturaScreen extends React.Component {
                 >
 
 
-                    <Tab.Screen name="Grafica" component={GraficasScreen} />
-                    <Tab.Screen name="Datos" component={DatosScreen} />
+                    <Tab.Screen name="Grafics" component={GraficasScreen} />
+                    <Tab.Screen name="Data" component={DatosScreen} />
 
                 </Tab.Navigator >
 
 
             );
-        
-                }
+
+        }
     }
 }
 
@@ -345,13 +401,15 @@ export default class TemperaturaScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 22
+        paddingTop: 0,
+        top: -16,
     },
     item: {
         textAlign: 'justify',
         padding: 10,
         fontSize: 18,
         height: 40,
+       
     },
 })
 
