@@ -34,7 +34,7 @@ This is the mobile monitoring application and was developed in React Native, the
 ![alt text](https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/LOGIN1.PNG)
 
 <p align="center">
-<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/LOGIN1.PNG" height="450">
+<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/LOGIN1.PNG" height="450">
 </p>  
 
 This is the first screen that is displayed when opening the application, here there are two buttons, the setting button will open a second screen shown below.
