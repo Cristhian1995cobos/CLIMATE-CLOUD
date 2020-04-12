@@ -10,7 +10,7 @@
 ## MQTT Broker
 
 
-For this project it was decided to use the [**ioticos.org**](www.ioticos.org) server, where you must create a free account and create the 3 subtopics that handle each variable.
+For this project it was decided to use the **ioticos.org** server, where you must create a free account and create the 3 subtopics that handle each variable.
 - /tempertura
 - /calidadaire
 - /humedad
