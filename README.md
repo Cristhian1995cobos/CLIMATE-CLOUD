@@ -52,13 +52,13 @@ In this screen you can make all the necessary changes to the connection variable
 In both cases when clicking on the connect button, we will see an alert, in case there is any connection error, the entry will not be allowed and the alert will be displayed:
 
 <p align="center">
-<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/ERROR.JPG" height="350">
+<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/ERROR.PNG" height="350">
 </p>  
 
 and in case we make a successful connection we will see the alert:
 
 <p align="center">
-<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/CONNECTED.JPG" height="350">
+<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/CONNECTED.PNG" height="350">
 </p>  
 
 In this alert we can return or enter through the **GET IN** button.
@@ -81,26 +81,21 @@ For the options of each variable there is a tabnavigator with two tabs:
 - **GRAPHICS:**this tab shows a graph with the last 10 data received from the variable plus its current data    
 - **DATA:**this tab shows a list with the last 10 data received from the variable and the time they were received
 
-<p align="left">
+<p align="center">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN1.PNG" height="350">
-</p>  
-<p align="right">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN11.PNG" height="350">
 </p>  
+ 
 
-<p align="left">
+<p align="center">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN2.PNG" height="350">
+
+<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN22.PNG" height="350">
 </p> 
 
-<p align="right">
-<img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN22.PNG" height="350">
-</p>  
-
-<p align="left">
+<p align="center">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN3.PNG" height="350">
-</p>  
 
-<p align="left">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN33.PNG" height="350">
 </p>  
 
