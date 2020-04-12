@@ -31,6 +31,8 @@ This is the mobile monitoring application and was developed in React Native, the
 
 ###### LOGIN
 
+![alt text](https://raw.githubusercontent.com/cristhian1995cobos/JRTEC/tree/master/Captures/LOGIN1.PNG)
+
 <p align="center">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/LOGIN1.PNG" height="450">
 </p>  
