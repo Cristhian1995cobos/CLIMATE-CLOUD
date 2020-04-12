@@ -78,8 +78,8 @@ Once the entry is allowed, there is a drawer menu with the following options:
 
 
 For the options of each variable there is a tabnavigator with two tabs:
-- **GRAPHICS:**this tab shows a graph with the last 10 data received from the variable plus its current data    
-- **DATA:**this tab shows a list with the last 10 data received from the variable and the time they were received
+- **GRAPHICS:** this tab shows a graph with the last 10 data received from the variable plus its current data    
+- **DATA:** this tab shows a list with the last 10 data received from the variable and the time they were received
 
 <p align="center">
 <img src="https://github.com/cristhian1995cobos/JRTEC/tree/master/Captures/SCREEN1.PNG" height="350">
