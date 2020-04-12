@@ -262,7 +262,7 @@ export default class Configuracion extends Component {
 
 
                     </View>
-                    <View style={{ color:'white',height:85}}>
+                    <View style={{ color:'white',height:135}}>
                     <Text style={{}}></Text>
                     </View>
                    

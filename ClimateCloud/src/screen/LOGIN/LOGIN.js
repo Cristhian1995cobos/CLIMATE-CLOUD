@@ -29,7 +29,8 @@ export default class LOGIN extends React.Component {
                         name="LOGIN"
                         component={Configuracion}
                         options={{
-                            title: 'LOGIN',
+                            headerShown: false,
+                            //title: 'LOGIN',
                             headerStyle: {
                                 backgroundColor: '#00b7ff',
                             },
@@ -43,7 +44,8 @@ export default class LOGIN extends React.Component {
                         name="INICIAL"
                         component={INICIAL}
                         options={{
-                            title: 'BACK TO LOGIN',
+                            //title: 'BACK TO LOGIN',
+                            headerShown: false,
                             headerStyle: {
                                 backgroundColor: '#00b7ff',
                             },

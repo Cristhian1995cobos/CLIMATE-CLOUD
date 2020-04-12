@@ -11,6 +11,7 @@ import TemperaturaScreen from '../Temperatura/TEMPERATURA'
 import CalidadScreen from '../Calidad/CALIDAD'
 import HumedadScreen from '../Humedad/HUMEDAD'
 import AboutScreen from '../About/About'
+import logoutscreen from '../LOGIN/Logout'
 
 function Menu(props){
   return(
@@ -55,6 +56,8 @@ export default function INICIAL() {
             iconName ='drop';
           } else if (route.name === 'About us') {
             iconName ='info-with-circle';
+          }else if (route.name === 'Log out') {
+            iconName ='log-out';
           }
 
           // You can return any component that you like here!
@@ -71,6 +74,7 @@ export default function INICIAL() {
         <Drawer.Screen name="Air quality" component={CalidadScreen} />
         <Drawer.Screen name="Humedity" component={HumedadScreen} />
         <Drawer.Screen name="About us" component={AboutScreen} />
+        <Drawer.Screen name="Log out" component={logoutscreen} />
       </Drawer.Navigator>
     
   );
