@@ -33,7 +33,7 @@ This is the mobile monitoring application and was developed in React Native, the
 
 
 <p align="center">
-<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/LOGIN1.PNG" height="450">
+<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/LOGIN1.PNG" height="350">
 </p>  
 
 This is the first screen that is displayed when opening the application, here there are two buttons, the setting button will open a second screen shown below.
@@ -53,13 +53,13 @@ In this screen you can make all the necessary changes to the connection variable
 In both cases when clicking on the connect button, we will see an alert, in case there is any connection error, the entry will not be allowed and the alert will be displayed:
 
 <p align="center">
-<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/ERROR.PNG" height="350">
+<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/ERROR.PNG" height="150">
 </p>  
 
 and in case we make a successful connection we will see the alert:
 
 <p align="center">
-<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/CONNECTED.PNG" height="350">
+<img src="https://github.com/cristhian1995cobos/JRTEC/blob/master/Captures/CONNECTED.PNG" height="150">
 </p>  
 
 In this alert we can return or enter through the **GET IN** button.
