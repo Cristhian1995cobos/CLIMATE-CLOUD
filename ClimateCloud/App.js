@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
 import {Provider} from 'react-redux'
-import {store} from './src/store'
+import {store, persistor} from './src/store'
 
 import LOGIN from './src/screen/LOGIN/LOGIN'
 
@@ -16,7 +17,10 @@ export default class App extends Component {
 
 const App = () =>(
   <Provider store={store}>
-      <LOGIN />
+     <PersistGate loading={null} persistor={persistor}>
+     <LOGIN />
+      </PersistGate>
+     
   </Provider>
 );
 

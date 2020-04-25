@@ -7,8 +7,8 @@ import s from '../../components/style'
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
 //////////////////////////////////////////////////
-import TemperaturaScreen from '../Temperatura/TEMPERATURA'
-import variables from '../../components/variables'
+
+
 
 import {connect} from 'react-redux';
 import {actions} from '../../store'
@@ -30,10 +30,10 @@ init({
     constructor(props) {
         super(props);
         this.state = {
-            host: variables.host,
-            username: variables.username,
-            password: variables.password,
-            roottopic: variables.roottopic,
+            host: this.props.state.host,
+            username: this.props.state.username,
+            password: this.props.state.password,
+            roottopic: this.props.state.roottopic,
             int: false,
             login: false,
             act:false
@@ -49,15 +49,7 @@ init({
 
    
   componentDidMount= () => {
-    const { changehost,changeusername,changepassword,changeroottopic, login} = this.props;
-    changehost(this.state.host);
-    changeusername(this.state.username)
-    changepassword(this.state.password)
-    changeroottopic(this.state.roottopic)
-
    
-    console.log(this.props.state)
-
   }
     handletextchangehost(host) {
         this.setState({
@@ -172,7 +164,7 @@ init({
         changeusername(this.state.username)
         changepassword(this.state.password)
         changeroottopic(this.state.roottopic)
-        
+        console.log
     }
 
 
