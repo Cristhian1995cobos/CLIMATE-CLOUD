@@ -12,9 +12,11 @@ import s from '../../components/style'
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
 ////////////////////////////////////////////////
-import variables from '../../components/variables'
-import { call } from 'react-native-reanimated';
+
+
 import { ScrollView } from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
+
 //variables
 let client
 let tabla
@@ -241,20 +243,21 @@ class DatosScreen extends React.Component {
 const Tab = createBottomTabNavigator();
 
 //clase> screen padre
-export default class TemperaturaScreen extends React.Component {
+ class TemperaturaScreen extends React.Component {
 
     static navigationOptions = {
         header: null,
     };
+    
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     constructor(props) {
         super(props);
-        client = new Paho.MQTT.Client(variables.host, Number(8093), 'CLIMATETEMP');
+        client = new Paho.MQTT.Client(this.props.state.host, Number(8093), 'CLIMATETEMP');
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
 
-        client.connect({ userName: variables.username, password: variables.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
-
+        client.connect({ userName: this.props.state.username, password: this.props.state.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+   
 
         this.state = {
             loading: true,
@@ -276,13 +279,14 @@ export default class TemperaturaScreen extends React.Component {
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe(variables.roottopic + '/temperatura')
+        client.subscribe(this.props.state.roottopic + '/temperatura')
         console.log("Conectado al broker")
+        console.log(this.props)
 
     }
     componentWillUnmount = () => {
         const { client } = this.state;
-        client.unsubscribe(variables.roottopic + '/temperatura')
+        client.unsubscribe(this.props.state.roottopic + '/temperatura')
         console.log('unsuscribe')
     }
 
@@ -352,7 +356,7 @@ export default class TemperaturaScreen extends React.Component {
                     tabBarIcon: ({ focused, color, size }) => {
                       let iconName;
           
-                      if (route.name === 'Grafics') {
+                      if (route.name === 'Graphics') {
                         iconName = 'areachart';
                         console.log('entremenu')
                         
@@ -385,7 +389,7 @@ export default class TemperaturaScreen extends React.Component {
                 >
 
 
-                    <Tab.Screen name="Grafics" component={GraficasScreen} />
+                    <Tab.Screen name="Graphics" component={GraficasScreen} />
                     <Tab.Screen name="Data" component={DatosScreen} />
 
                 </Tab.Navigator >
@@ -413,3 +417,7 @@ const styles = StyleSheet.create({
     },
 })
 
+const mapStateToProps = state => ({
+    state: state,
+})
+export default connect(mapStateToProps,null)(TemperaturaScreen)

@@ -14,8 +14,8 @@ import s from '../../components/style'
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
 
-import variables from '../../components/variables'
 
+import {connect} from 'react-redux';
 //variables
 let tabla
 let tabla2
@@ -245,7 +245,7 @@ const Tab = createBottomTabNavigator();
 
 
 //clase> screen padre
-export default class CalidadScreen extends React.Component {
+ class CalidadScreen extends React.Component {
 
     static navigationOptions = {
         header: null,
@@ -256,12 +256,12 @@ export default class CalidadScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        const client = new Paho.MQTT.Client(variables.host, Number(8093), 'CLIMATECAL');
+        const client = new Paho.MQTT.Client(this.props.state.host, Number(8093), 'CLIMATECAL');
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
 
 
-        client.connect({ userName: variables.username, password: variables.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
+        client.connect({ userName: this.props.state.username, password: this.props.state.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
         this.state = {
             host: '',
             temp: '...',
@@ -285,13 +285,13 @@ export default class CalidadScreen extends React.Component {
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe(variables.roottopic + '/calidadaire')
+        client.subscribe(this.props.state.roottopic + '/calidadaire')
         console.log("Conectado al broker")
 
     }
     componentWillUnmount = () => {
         const { client } = this.state;
-        client.unsubscribe(variables.roottopic + '/calidadaire')
+        client.unsubscribe(this.props.state.roottopic + '/calidadaire')
         console.log('unsuscribe')
     }
 
@@ -362,7 +362,7 @@ export default class CalidadScreen extends React.Component {
                         tabBarIcon: ({ focused, color, size }) => {
                             let iconName;
 
-                            if (route.name === 'Grafics') {
+                            if (route.name === 'Graphics') {
                                 iconName = 'areachart';
                                 console.log('entremenu')
 
@@ -395,7 +395,7 @@ export default class CalidadScreen extends React.Component {
                 >
 
 
-                    <Tab.Screen name="Grafics" component={GraficasScreen} />
+                    <Tab.Screen name="Graphics" component={GraficasScreen} />
                     <Tab.Screen name="Data" component={DatosScreen} />
 
                 </Tab.Navigator >
@@ -422,3 +422,7 @@ const styles = StyleSheet.create({
     },
 })
 
+const mapStateToProps = state => ({
+    state: state,
+})
+export default connect(mapStateToProps,null)(CalidadScreen)

@@ -1,6 +1,6 @@
 //EL VERDADERO LOGIN, LLAMA A INICIAL
 import React, { Component } from 'react';
-import { AppRegistry, TextInput, View, Text, Alert, TouchableOpacity, Image ,ScrollView} from 'react-native';
+import { AppRegistry, TextInput, View, Text, Alert, TouchableOpacity, Image ,ScrollView, TouchableHighlightBase} from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 
 import s from '../../components/style'
@@ -9,6 +9,9 @@ import { AsyncStorage } from 'react-native';
 //////////////////////////////////////////////////
 import TemperaturaScreen from '../Temperatura/TEMPERATURA'
 import variables from '../../components/variables'
+
+import {connect} from 'react-redux';
+import {actions} from '../../store'
 
 //////////////////////////////////////
 init({
@@ -20,7 +23,7 @@ init({
     sync: {
     }
 });
-export default class Configuracion extends Component {
+ class Configuracion extends Component {
 
 
 
@@ -32,7 +35,8 @@ export default class Configuracion extends Component {
             password: variables.password,
             roottopic: variables.roottopic,
             int: false,
-            login: true
+            login: false,
+            act:false
 
         };
         this.handletextchangehost = this.handletextchangehost.bind(this);
@@ -40,14 +44,25 @@ export default class Configuracion extends Component {
         this.handletextchangepassword = this.handletextchangepassword.bind(this);
         this.handletextchangeroottopic = this.handletextchangeroottopic.bind(this);
         // this.pressbutton = this.pressbutton.bind(this);
+        console.log("primero        "+this.state.props)
     }
-  
+
+   
+  componentDidMount= () => {
+    const { changehost,changeusername,changepassword,changeroottopic, login} = this.props;
+    changehost(this.state.host);
+    changeusername(this.state.username)
+    changepassword(this.state.password)
+    changeroottopic(this.state.roottopic)
+
+   
+    console.log(this.props.state)
+
+  }
     handletextchangehost(host) {
         this.setState({
             host
         })
-
-
 
     }
     handletextchangeusername(username) {
@@ -97,60 +112,93 @@ export default class Configuracion extends Component {
         )
         console.log(this.state.int)
         Alert.alert('Sorry: Not connected', 'Host, Username o Password incorrectly entered', [
-            { text: 'Try again', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'Try again', onPress: this.presscancel , style: 'cancel' },
         ])
     }
  
-    pressbutton = () => {
-        variables.host = this.state.host
-        variables.username = this.state.username
-        variables.password = this.state.password
-        variables.roottopic = this.state.roottopic
 
-        console.log('host:' + this.state.host)
-        console.log('username:' + this.state.username)
-        console.log('password:' + this.state.password)
-        console.log('roottopic:' + this.state.roottopic)
-
+    presssave = () => {
+     
+        
         const client = new Paho.MQTT.Client(this.state.host, Number(8093), 'CLIMATEPRUEBA');
         client.onConnectionLost = this.onConnectionLost;
 
         client.connect({ timeout: 5,userName: this.state.username, password: this.state.password, keepAliveInterval: 60, onSuccess: this.onConnect, onFailure: this.onerror, useSSL: false });
-
-
+       
+             
     }
+
+    pressreset = () => {
+        Alert.alert('Factory reset', 'Are you sure?:',  [
+            { text: 'Yes', onPress: this.presssure },
+            { text: 'NO', onPress: () => console.log('Cancel Pressed'), style: 'cancel'  },
+            
+        ])
+    }
+    
+    presssure = () => {
+        const { changehost,changeusername,changepassword,changeroottopic, login} = this.props;
+        console.log('resetee')
+        changehost('ioticos.org')
+        changeusername('rJ6XFUSwA6ypIHM')
+        changepassword('aTuDefz29HIVrlr')
+        changeroottopic('m4xvQf1qekvtaCH')
+        this.setState(
+            { act: !this.state.act}
+        )
+
+        this.setState(
+            { 
+            host: this.props.state.host,
+            username: this.props.state.username,
+            password: this.props.state.password,
+            roottopic: this.props.state.roottopic, }
+        )
+      
+    }
+
     presssettings = () => {
 
 
-        console.log('confi2 ' + this.state.login)
         this.setState(
             { login: true }
         )
 
-
-        console.log('confi2 ' + this.state.login)
-
-        variables.login = this.state.login
-        console.log('confi ' + variables.login)
-
-        console.log('confi2 ' + this.state.login)
-
+    }
+    presscancel = () => {
+        
+        const { changehost,changeusername,changepassword,changeroottopic, login} = this.props;
+        changehost(this.state.host)
+        changeusername(this.state.username)
+        changepassword(this.state.password)
+        changeroottopic(this.state.roottopic)
+        
     }
 
+
     pressin = () => {
-        variables.login = false,
+        
             this.setState(
                 { int: false }
             )
-
-        console.log('aplaste ' + variables.login)
+            this.setState(
+                { login: false }
+            )
+      
         console.log('aplaste2 ' + this.state.int)
         this.props.navigation.navigate('INICIAL')
+        const { changehost,changeusername,changepassword,changeroottopic, login} = this.props;
+   
+        changehost(this.state.host)
+        changeusername(this.state.username)
+        changepassword(this.state.password)
+        changeroottopic(this.state.roottopic)
 
     }
 
     render() {
-        if (variables.login != true) {
+        console.log('propiedades del com' , this.state);
+        if (this.state.login != true) {
            
             return (
                
@@ -187,7 +235,7 @@ export default class Configuracion extends Component {
                         <Button
                             title="CONECT"
                             color='white'
-                            onPress={this.pressbutton}
+                            onPress={this.presssave}
                         />
 
 
@@ -252,12 +300,19 @@ export default class Configuracion extends Component {
                         style={{ height: 40,width:200, backgroundColor: 'white', borderWidth: 3, borderColor: '#00b7ff', top: 10 }}
                         onChangeText={this.handletextchangeroottopic}
                     />
-                   
+                     <View style={{ top: 20 }}>
+                        <Button
+                            title="Save and Connect"
+                            color='white'
+                            onPress={this.presssave}
+                        />
+                         <Text style={{}}></Text>
+                         </View>
                     <View style={{ top: 20 }}>
                         <Button
-                            title="CONECT"
+                            title="Reset"
                             color='white'
-                            onPress={this.pressbutton}
+                            onPress={this.pressreset}
                         />
 
 
@@ -274,3 +329,15 @@ export default class Configuracion extends Component {
         //      }
     }
 }
+const mapDispatchToProps = dispatch =>({
+    login: (username,password)=> dispatch(actions.user.login(username, password)),
+    changehost: (new_state)=> dispatch(actions.user.changehost(new_state)),
+    changeusername: (new_state)=> dispatch(actions.user.changeusername(new_state)),
+    changepassword: (new_state)=> dispatch(actions.user.changepassword(new_state)),
+    changeroottopic: (new_state)=> dispatch(actions.user.changeroottopic(new_state)),
+});
+const mapStateToProps = state => ({
+    state: state,
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Configuracion)
