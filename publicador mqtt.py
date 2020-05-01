@@ -18,7 +18,7 @@ def on_connect (client, userdata, flags, rc): #funcion llamada cuando nos conect
  
 
 def on_message(client, userdata, msg):#funcion para cuando llega un mensaje
-    print (msg.payload.decode("utf-8"))
+print (msg.payload.decode("utf-8"))
 
 # definimos el cliente, host, usuario y contraseña introducidas al comienzo
 client = mqtt.Client ()
